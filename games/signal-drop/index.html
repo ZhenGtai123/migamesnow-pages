@@ -1,0 +1,273 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#090912"><title>Signal Drop | Mi Games Now</title><meta name="description" content="Drop packets through shifting lanes and score clean landings while the board speeds up."><link rel="canonical" href="https://migamesnow.vip/games/signal-drop/"><meta property="og:type" content="website"><meta property="og:title" content="Signal Drop | Mi Games Now"><meta property="og:description" content="Drop packets through shifting lanes and score clean landings while the board speeds up."><meta property="og:url" content="https://migamesnow.vip/games/signal-drop/"><meta property="og:image" content="https://migamesnow.vip/assets/game-signal-drop.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Signal Drop | Mi Games Now"><meta name="twitter:description" content="Drop packets through shifting lanes and score clean landings while the board speeds up."><meta name="twitter:image" content="https://migamesnow.vip/assets/game-signal-drop.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Mi Games Now","url":"https://migamesnow.vip","description":"Original lightweight browser games with clear rules, strategy notes, design diaries, and fast play sessions.","inLanguage":"en","publisher":{"@type":"Organization","name":"Mi Games Now","url":"https://migamesnow.vip"}}</script><link rel="stylesheet" href="/_astro/BaseLayout.DjHNQQ96.css"></head><body class="theme-games"><div class="ambient-layer" aria-hidden="true"></div><div class="site-shell"><header class="site-header"><div class="container nav-bar"><a class="brand" href="/" aria-label="Mi Games Now home"><span class="brand-mark" aria-hidden="true"></span><span>Mi Games Now</span></a><nav class="nav-links" aria-label="Primary navigation"><a href="/arcade/">Arcade</a><a href="/games/circuit-sprint/">Games</a><a href="/articles/">Strategy</a><a href="/about/">About</a><a href="/contact/">Contact</a></nav><a class="header-action" href="/arcade/"><span>Arcade</span><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></div></header><main><section class="section"><div class="container split"><article class="prose-shell"><header class="prose-header"><p class="eyebrow">Timing under pressure</p><h1>Signal Drop</h1><p>Drop packets through shifting lanes and score clean landings while the board speeds up.</p></header><div class="game-panel game-widget" data-game="signal-drop" data-target-score="120"><div class="game-stage"><canvas class="game-canvas" width="960" height="540" aria-label="Signal Drop play area"></canvas><div class="game-controls"><button type="button" data-action="start"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"></path></svg>Start</button><button type="button" data-action="reset"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Reset</button><span class="tag" data-score>Score 0</span><span class="tag" data-best>Best 0</span><span class="tag">Target 120</span><span class="tag" data-status>Ready</span></div><div class="progress-rail game-progress" aria-hidden="true"><i data-game-progress></i></div><div class="touch-pad" aria-label="Touch controls"><button type="button" data-move="up" aria-label="Move up"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-arrow-up"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg></button><button type="button" data-move="left" aria-label="Move left"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg></button><button type="button" data-move="right" aria-label="Move right"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button><button type="button" data-move="down" aria-label="Move down"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-arrow-down"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg></button></div></div></div><script>
+  const widgets = document.querySelectorAll(".game-widget");
+
+  widgets.forEach((widget) => {
+    const canvas = widget.querySelector("canvas");
+    const ctx = canvas?.getContext("2d");
+    const scoreNode = widget.querySelector("[data-score]");
+    const bestNode = widget.querySelector("[data-best]");
+    const statusNode = widget.querySelector("[data-status]");
+    const progressNode = widget.querySelector("[data-game-progress]");
+    const slug = widget.getAttribute("data-game");
+    const targetScore = Number(widget.getAttribute("data-target-score") || 100);
+    const bestKey = `mi-games-now-best:${slug}`;
+    const clearedKey = "mi-games-now-cleared-v1";
+    const playsKey = `mi-games-now-plays:${slug}`;
+    if (!canvas || !ctx || !scoreNode || !bestNode || !statusNode || !progressNode) return;
+
+    const state = {
+      running: false,
+      score: 0,
+      tick: 0,
+      player: { x: 480, y: 270, lane: 1 },
+      target: { x: 240, y: 180 },
+      sequence: [],
+      input: [],
+      activeCell: -1
+    };
+
+    const colors = {
+      bg: "#05050a",
+      grid: "rgba(255,255,255,0.08)",
+      cyan: "#22d3ee",
+      pink: "#f472b6",
+      yellow: "#facc15",
+      red: "#fb7185",
+      text: "#f3f1ff"
+    };
+
+    function setScore(value) {
+      state.score = Math.max(0, value);
+      scoreNode.textContent = `Score ${state.score}`;
+      progressNode.style.width = `${Math.min(100, Math.round((state.score / targetScore) * 100))}%`;
+      const previousBest = Number(localStorage.getItem(bestKey) || 0);
+      if (state.score > previousBest) {
+        localStorage.setItem(bestKey, String(state.score));
+        bestNode.textContent = `Best ${state.score}`;
+      }
+      if (state.score >= targetScore) {
+        const cleared = new Set(JSON.parse(localStorage.getItem(clearedKey) || "[]"));
+        if (!cleared.has(slug)) {
+          cleared.add(slug);
+          localStorage.setItem(clearedKey, JSON.stringify([...cleared]));
+        }
+        setStatus("Target cleared");
+      }
+    }
+
+    function setStatus(value) {
+      statusNode.textContent = value;
+    }
+
+    function setBestFromStorage() {
+      bestNode.textContent = `Best ${Number(localStorage.getItem(bestKey) || 0)}`;
+    }
+
+    function clear() {
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = colors.grid;
+      ctx.lineWidth = 1;
+      for (let x = 0; x <= canvas.width; x += 48) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= canvas.height; y += 48) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+    }
+
+    function drawText(label, x, y) {
+      ctx.fillStyle = colors.text;
+      ctx.font = "700 22px system-ui";
+      ctx.fillText(label, x, y);
+    }
+
+    function drawCircuit() {
+      clear();
+      ctx.strokeStyle = colors.cyan;
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(80, 110);
+      ctx.lineTo(860, 110);
+      ctx.lineTo(860, 430);
+      ctx.lineTo(100, 430);
+      ctx.lineTo(100, 220);
+      ctx.lineTo(700, 220);
+      ctx.stroke();
+
+      const surgeX = 160 + ((state.tick * 3) % 620);
+      ctx.fillStyle = colors.red;
+      ctx.fillRect(surgeX, 104, 16, 52);
+      ctx.fillRect(850 - surgeX * 0.65, 404, 16, 52);
+
+      ctx.fillStyle = colors.yellow;
+      ctx.beginPath();
+      ctx.arc(state.target.x, state.target.y, 15, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      ctx.arc(state.player.x, state.player.y, 18, 0, Math.PI * 2);
+      ctx.fill();
+      drawText("Circuit Sprint", 32, 44);
+
+      if (Math.hypot(state.player.x - state.target.x, state.player.y - state.target.y) < 34) {
+        setScore(state.score + 10);
+        state.target.x = 120 + Math.random() * 720;
+        state.target.y = 130 + Math.random() * 280;
+      }
+    }
+
+    function drawSignalDrop() {
+      clear();
+      const laneWidth = canvas.width / 4;
+      for (let i = 0; i < 4; i += 1) {
+        ctx.strokeStyle = i === state.player.lane ? colors.cyan : colors.grid;
+        ctx.lineWidth = i === state.player.lane ? 5 : 2;
+        ctx.strokeRect(i * laneWidth + 24, 78, laneWidth - 48, 380);
+      }
+      const gate = (state.tick / 38) % 4 | 0;
+      ctx.fillStyle = colors.yellow;
+      ctx.fillRect(gate * laneWidth + 58, 426, laneWidth - 116, 24);
+      ctx.fillStyle = colors.pink;
+      ctx.fillRect(state.player.lane * laneWidth + laneWidth / 2 - 24, state.player.y, 48, 48);
+      drawText("Signal Drop", 32, 44);
+      if (state.running) {
+        state.player.y += 2.8;
+        if (state.player.y > 410) {
+          if (state.player.lane === gate) {
+            setScore(state.score + 12);
+            setStatus("Clean landing");
+          } else {
+            setScore(state.score - 4);
+            setStatus("Lane miss");
+          }
+          state.player.y = 90;
+        }
+      }
+    }
+
+    function drawLanternGrid() {
+      clear();
+      drawText("Lantern Grid", 32, 44);
+      const size = 82;
+      const gap = 18;
+      const startX = 288;
+      const startY = 112;
+      if (state.sequence.length === 0) {
+        state.sequence = [0, 5, 10];
+      }
+      state.activeCell = state.running ? state.sequence[(state.tick / 28) % state.sequence.length | 0] : -1;
+      for (let i = 0; i < 16; i += 1) {
+        const x = startX + (i % 4) * (size + gap);
+        const y = startY + Math.floor(i / 4) * (size + gap);
+        ctx.fillStyle = i === state.activeCell ? colors.yellow : "rgba(255,255,255,0.08)";
+        ctx.strokeStyle = i === state.activeCell ? colors.pink : colors.grid;
+        ctx.lineWidth = 3;
+        ctx.fillRect(x, y, size, size);
+        ctx.strokeRect(x, y, size, size);
+      }
+    }
+
+    function render() {
+      state.tick += state.running ? 1 : 0;
+      if (slug === "signal-drop") drawSignalDrop();
+      else if (slug === "lantern-grid") drawLanternGrid();
+      else drawCircuit();
+      requestAnimationFrame(render);
+    }
+
+    function reset() {
+      state.running = false;
+      state.tick = 0;
+      state.player = { x: 480, y: slug === "signal-drop" ? 90 : 270, lane: 1 };
+      state.target = { x: 240, y: 180 };
+      state.sequence = [];
+      setScore(0);
+      setBestFromStorage();
+      setStatus("Ready");
+    }
+
+    function recordPlay() {
+      localStorage.setItem(playsKey, String(Number(localStorage.getItem(playsKey) || 0) + 1));
+    }
+
+    function movePlayer(direction) {
+      if (slug === "signal-drop") {
+        if (direction === "left") state.player.lane = Math.max(0, state.player.lane - 1);
+        if (direction === "right") state.player.lane = Math.min(3, state.player.lane + 1);
+        return;
+      }
+      const speed = 16;
+      if (direction === "left") state.player.x -= speed;
+      if (direction === "right") state.player.x += speed;
+      if (direction === "up") state.player.y -= speed;
+      if (direction === "down") state.player.y += speed;
+      state.player.x = Math.max(24, Math.min(canvas.width - 24, state.player.x));
+      state.player.y = Math.max(80, Math.min(canvas.height - 24, state.player.y));
+    }
+
+    widget.querySelector('[data-action="start"]')?.addEventListener("click", () => {
+      if (!state.running) recordPlay();
+      state.running = !state.running;
+      setStatus(state.running ? "Running" : "Paused");
+    });
+    widget.querySelector('[data-action="reset"]')?.addEventListener("click", reset);
+    widget.querySelectorAll("[data-move]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!state.running) {
+          state.running = true;
+          recordPlay();
+          setStatus("Running");
+        }
+        movePlayer(button.dataset.move);
+      });
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (!state.running && event.code !== "Space") return;
+      if (event.code === "Space") {
+        if (!state.running) recordPlay();
+        state.running = !state.running;
+        setStatus(state.running ? "Running" : "Paused");
+        event.preventDefault();
+      }
+      if (slug === "signal-drop") {
+        if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") movePlayer("left");
+        if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") movePlayer("right");
+      } else {
+        if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") movePlayer("left");
+        if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") movePlayer("right");
+        if (event.key === "ArrowUp" || event.key.toLowerCase() === "w") movePlayer("up");
+        if (event.key === "ArrowDown" || event.key.toLowerCase() === "s") movePlayer("down");
+      }
+    });
+
+    canvas.addEventListener("click", (event) => {
+      if (slug !== "lantern-grid") return;
+      const rect = canvas.getBoundingClientRect();
+      const x = (event.clientX - rect.left) * (canvas.width / rect.width);
+      const y = (event.clientY - rect.top) * (canvas.height / rect.height);
+      const size = 82;
+      const gap = 18;
+      const startX = 288;
+      const startY = 112;
+      const col = Math.floor((x - startX) / (size + gap));
+      const row = Math.floor((y - startY) / (size + gap));
+      const cell = row * 4 + col;
+      if (col >= 0 && col < 4 && row >= 0 && row < 4) {
+        setScore(state.score + (cell === state.activeCell ? 8 : -3));
+        setStatus(cell === state.activeCell ? "Matched" : "Miss");
+      }
+    });
+
+    reset();
+    render();
+  });
+</script><div class="prose"><h2>Run profile</h2><p>Difficulty: <strong>Easy</strong>. Skill focus: <strong>Timing</strong>. Typical session:<strong> 1-3 min</strong>. Target score: <strong>120</strong>.</p><h2>Controls</h2><p>Left and right arrows choose a lane. Space drops the packet.</p><h2>Goal</h2><p>Land packets in matching gates and avoid overloaded lanes.</p><h2>Strategy notes</h2><p>Keep the first few rounds slow and deliberate. The scoring system rewards clean decisions more than frantic input, so watch the board rhythm before chasing a higher score.</p><p>This is an original lightweight prototype. The surrounding notes explain the mechanics so the page remains useful even for readers who are not actively playing.</p></div></article><aside><div class="text-panel"><h2>More games</h2><p>Each game has a playable canvas, rules, and strategy notes.</p></div><div class="content-grid" style="grid-template-columns: 1fr; margin-top: 16px;"><a class="tool-card" href="/games/circuit-sprint/"><img src="/assets/game-circuit-sprint.png" alt="A neon circuit board game scene with a signal marker and score path." loading="lazy"><div class="tool-card-body"><p class="eyebrow">Route, dodge, recharge</p><h3>Circuit Sprint</h3><p>Guide a signal through a moving circuit board, collect charge nodes, and avoid red surge gates.</p><div class="button-row"><span class="button"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"></path></svg>Play</span></div></div></a><a class="tool-card" href="/games/lantern-grid/"><img src="/assets/game-lantern-grid.png" alt="A patterned neon grid for a memory challenge game." loading="lazy"><div class="tool-card-body"><p class="eyebrow">Pattern memory in short rounds</p><h3>Lantern Grid</h3><p>Watch a grid pulse, repeat the pattern, and push your memory without long sessions.</p><div class="button-row"><span class="button"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-play"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"></path></svg>Play</span></div></div></a></div></aside></div></section></main><footer class="site-footer"><div class="container footer-grid"><div><a class="brand" href="/" aria-label="Mi Games Now home"><span class="brand-mark" aria-hidden="true"></span><span>Mi Games Now</span></a><p class="notice">Original browser games and editorial notes. Games are built for casual play, strategy reading, and transparent design notes.</p><p class="notice">(c) 2026 Mi Games Now. All rights reserved.</p></div><nav class="footer-links" aria-label="Footer navigation"><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/editorial-policy/">Editorial Policy</a><a href="/privacy-policy/">Privacy</a><a href="/cookie-policy/">Cookies</a><a href="/terms/">Terms</a></nav></div></footer></div></body></html>
